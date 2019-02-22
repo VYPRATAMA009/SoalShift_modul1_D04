@@ -43,15 +43,16 @@ Keterangan: syaratnya adalah negaranya United states karena hasil dari a, dan ta
    ```
    c. Tentukan tiga product yang memberikan penjualan(quantity) terbanyak berdasarkan tiga product line yang didapatkan pada soal poin b
    
-    ```
+```
     awk -F ',' '{if($4 == "Personal Accessories" || $4 == "Camping Equipment" || $ 4 == "Mountaineering Equipment" && $7 == '2012') i[$6]+=$10} END {for(x in i) {print i[x]" "x}}' WA_Sales_Products_2012-14.csv | sort -nr | head-3
     Syaratnya adalah: hasil dari b, dan tahun 2012, lalu jumlah quantity yang sesuai dengan kolom nomor 6 akan ditampung, diprint, di urutkan, dan di ambil 3 data teratas
-   ```
-    3. Buatlah sebuah script bash yang dapat menghasilkan password secara acak sebanyak 12 karakter yang terdapat huruf besar, huruf kecil, dan angka. Password acak tersebut disimpan pada file berekstensi .txt dengan ketentuan pemberian nama sebagai berikut:
+```
+   3.Buatlah sebuah script bash yang dapat menghasilkan password secara acak sebanyak 12 karakter yang terdapat huruf besar,   huruf kecil, dan angka. Password acak tersebut disimpan pada file berekstensi .txt dengan ketentuan pemberian nama sebagai berikut:
         a. Jika tidak ditemukan file password1.txt maka password acak tersebut disimpan pada file bernama password1.txt
         b. Jika file password1.txt sudah ada maka password acak baru akan disimpan pada file bernama password2.txt dan begitu           seterusnya.
         c. Urutan nama file tidak boleh ada yang terlewatkan meski filenya dihapus.
         d. Password yang dihasilkan tidak boleh sama.
+
   
 ```#!/bin/bash
 loop=1
