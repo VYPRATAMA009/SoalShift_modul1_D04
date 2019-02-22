@@ -75,6 +75,19 @@ keterangan : membuat *looping dengan fungsi if untuk mencari apakah ada file pas
         d. Backup file syslog setiap jam.
         e. dan buatkan juga bash script untuk dekripsinya.
    ```
+#!/bin/bash
+jam=$(date +"%H")
+input="/var/log/syslog"
+uppercase=ABCDEFGHIJKLMNOPQRSTUVWXYZ
+lowercase=abcdefghijklmnopqrstuvwxyz
+
+jamnow=$(date +"%H:%M %d-%m-%Y")
+
+cat $input | tr ${lowercase:0:26} ${lowercase:${jam}:26} > "$jamnow"
+
+cat $input | tr ${uppercase:0:26} ${uppercase:${jam}:26} > "$jamnow"
+keterangan : enkripsi
+fungsi jam digunakan untuk mengambil jam awal, file syslog di diakses dengan variabel input,kemudian penempatan huruf, sesuai dengan penghitungan fungsi jamnow lalu string diambil dari uppercase & lowercase  dari indeks ke 0 sebanyak 26 lalu disimpan di jamnow di folder home
    ```
 5. Buatlah sebuah script bash untuk menyimpan record dalam syslog yang memenuhi kriteria berikut:
         a. Tidak mengandung string “sudo”, tetapi mengandung string “cron”, serta buatlah pencarian stringnya tidak bersifat  case sensitive, sehingga huruf kapital atau tidak, tidak menjadi masalah.
