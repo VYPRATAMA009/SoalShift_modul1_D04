@@ -46,14 +46,13 @@ Keterangan: syaratnya adalah negaranya United states karena hasil dari a, dan ta
     ```
     awk -F ',' '{if($4 == "Personal Accessories" || $4 == "Camping Equipment" || $ 4 == "Mountaineering Equipment" && $7 == '2012') i[$6]+=$10} END {for(x in i) {print i[x]" "x}}' WA_Sales_Products_2012-14.csv | sort -nr | head-3
     Syaratnya adalah: hasil dari b, dan tahun 2012, lalu jumlah quantity yang sesuai dengan kolom nomor 6 akan ditampung, diprint, di urutkan, dan di ambil 3 data teratas
-```
-
-```
+   ```
     3. Buatlah sebuah script bash yang dapat menghasilkan password secara acak sebanyak 12 karakter yang terdapat huruf besar, huruf kecil, dan angka. Password acak tersebut disimpan pada file berekstensi .txt dengan ketentuan pemberian nama sebagai berikut:
         a. Jika tidak ditemukan file password1.txt maka password acak tersebut disimpan pada file bernama password1.txt
         b. Jika file password1.txt sudah ada maka password acak baru akan disimpan pada file bernama password2.txt dan begitu           seterusnya.
         c. Urutan nama file tidak boleh ada yang terlewatkan meski filenya dihapus.
         d. Password yang dihasilkan tidak boleh sama.
+  
 ```#!/bin/bash
 loop=1
 num=1
@@ -83,5 +82,6 @@ keterangan : membuat *looping dengan fungsi if untuk mencari apakah ada file pas
         d. Jalankan script tadi setiap 6 menit dari menit ke 2 hingga 30, contoh 13:02, 13:08, 13:14, dst.
 ```#!/bin/bash
 cat /var/log/syslog | grep -v "sudo" | grep -n "cron" | grep -i "cron" | awk '{print $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12 }' >> /home/vinsensius009/modul1/record.txt
+Keterangan: cat file syslog, lalu filter kata sudo menggunakan grep -v, lalu filter kata cron dengan grep -n, dan buat string cron menjadi insensitive case dengan grep -i, setelah itu print menjadi 12 kolom dan masukkan hasilnya di home/user/modul1/record.txt
 ```2-30/6 * * * * /bin/bash /home/vinsensius009/prak1/soal5.sh
 Jalankan script setiap 6 menit dari menit kedua sampai menit 30
