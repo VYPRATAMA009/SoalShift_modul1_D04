@@ -1,0 +1,15 @@
+# For more information see the manual pages of crontab(5) and cron(8)
+# 
+# m h  dom mon dow   command
+#* * * * * /bin/bash /home/vinsensius009/movefile01.sh
+
+#no1
+14 14 14 2 5 /bin/bash /home/vinsensius009/prak1/soal1.sh
+
+#no4
+*/60 * * * * /bin/bash /home/vinsensius009/prak1/soal4.sh
+
+#no5
+2-30/6 * * * * /bin/bash /home/vinsensius009/prak1/soal5.sh
+
+
