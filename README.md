@@ -52,20 +52,24 @@ Keterangan: syaratnya adalah negaranya United states karena hasil dari a, dan ta
         b. Jika file password1.txt sudah ada maka password acak baru akan disimpan pada file bernama password2.txt dan begitu           seterusnya.
         c. Urutan nama file tidak boleh ada yang terlewatkan meski filenya dihapus.
         d. Password yang dihasilkan tidak boleh sama.
-
-  
 ```#!/bin/bash
-loop=1
 num=1
-while [ $loop -ne 0 ]
+looping=1
+
+while [ $looping -ne 0 ]
 do
-if [[ -f /home/vinsensius009/prak1/password$num.txt ]] ;
-then    num=$((num + 1))
+if [[ -f /home/vinsensius009/modul1/SoalShift_modul1_D04-master/password$num.txt ]] ;
+then
+        num=$((num + 1))
 else
-cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold  -w 12 | head -1> /home/vinsensius009/prak1/password$num.txt
-loop=0
+
+cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold  -w 12 | head -1 |  awk '$0 ~ /[a-z]/ && $0 ~ /[0-9]/ && $0 ~ /[A-Z]/ {print $0;}' > /home/vinsensius009/modul1/SoalShift_modul1_D04-master/password$num.txt
+
+looping=0
+
 fi
 done
+```
 keterangan : membuat *looping dengan fungsi if untuk mencari apakah ada file password?.txt di folder prak1, apabila belum buat file password.txt dengan (line 60) dengan kombinasi huruf besar kecil,dan numerik , lalu namai sesuai dengan urutan password$num, ketika di bash yang kedua & selanjutnya, penamaan password akan urut
 ```
 4. Lakukan backup file syslog setiap jam dengan format nama file “jam:menit tanggal-bulan-tahun”. Isi dari file backup terenkripsi dengan konversi huruf (string manipulation) yang disesuaikan dengan jam dilakukannya backup misalkan sebagai berikut:
@@ -74,21 +78,34 @@ keterangan : membuat *looping dengan fungsi if untuk mencari apakah ada file pas
         c. setelah huruf z akan kembali ke huruf a
         d. Backup file syslog setiap jam.
         e. dan buatkan juga bash script untuk dekripsinya.
-   ```
+```
 #!/bin/bash
-jam=$(date +"%H")
+jam=`date +"%H"`
 input="/var/log/syslog"
+#uppercase=(A B C D E F G H I J K L M N O P Q R S T U V W X Y Z)
+#lowercase=(a b c d e f g h i j k l m n o p q r s t u v w x y z)
+uppercase="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+lowercase="abcdefghijklmnopqrstuvwxyz"
+uppercase=$uppercase$uppercase
+lowercase=$lowercase$lowercase
+jamnow=`date +"%H:%M %d-%m-%Y"`
+
+#cat $input
+cat $input | tr "${lowercase:0:26}" "${lowercase:$jam:26}"  | tr "${uppercase:0:26}" "${uppercase:$jam:26}" > "$jamnow"
+```
+fungsi jam digunakan untuk mengambil jam awal, file syslog di diakses dengan variabel input,kemudian penempatan huruf, sesuai dengan penghitungan fungsi jamnow lalu string diambil dari uppercase & lowercase  dari indeks ke 0 sebanyak 26 lalu disimpan di jamnow di folder home
+```#!/bin/bash
+#timex=$1
+#jam=`echo "$1" | awk 'BEGIN {FS=":"}{print $1}'`
+tm=$1
+jamnow=${tm:0:2}
 uppercase=ABCDEFGHIJKLMNOPQRSTUVWXYZ
 lowercase=abcdefghijklmnopqrstuvwxyz
-
-jamnow=$(date +"%H:%M %d-%m-%Y")
-
-cat $input | tr ${lowercase:0:26} ${lowercase:${jam}:26} > "$jamnow"
-
-cat $input | tr ${uppercase:0:26} ${uppercase:${jam}:26} > "$jamnow"
-keterangan : enkripsi
-fungsi jam digunakan untuk mengambil jam awal, file syslog di diakses dengan variabel input,kemudian penempatan huruf, sesuai dengan penghitungan fungsi jamnow lalu string diambil dari uppercase & lowercase  dari indeks ke 0 sebanyak 26 lalu disimpan di jamnow di folder home
-   ```
+uppercase=$uppercase$uppercase
+lowercase=$lowercase$lowercase
+cat "$1" | tr "${lowercase:${jamnow}:26}" "${lowercase:0:26}" | tr "${uppercase:${jamnow}:26}" "${uppercase:0:26}" > "dekrip.txt"
+```
+  
 5. Buatlah sebuah script bash untuk menyimpan record dalam syslog yang memenuhi kriteria berikut:
         a. Tidak mengandung string “sudo”, tetapi mengandung string “cron”, serta buatlah pencarian stringnya tidak bersifat  case sensitive, sehingga huruf kapital atau tidak, tidak menjadi masalah.
         b. Jumlah field (number of field) pada baris tersebut berjumlah kurang dari 13.
