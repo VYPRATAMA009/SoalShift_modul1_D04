@@ -69,34 +69,30 @@ looping=0
 
 fi
 done
+
+keterangan : membuat *looping dengan fungsi if untuk mencari apakah ada file password?.txt di folder prak1, apabila belum buat file password.txt dengan (line 66) dengan kombinasi huruf besar kecil,dan numerik , pada line 66 terdapat command awk ~ fungsinya untuk mengechek apakah password random yang dihasilkan sudah terdiri dari abjad besar, kecil, maupun numerik, bila sudah maka diprint ke dalam file password$num, lalu namai sesuai dengan urutan password$num, ketika di bash yang kedua & selanjutnya, penamaan password akan urut
 ```
-keterangan : membuat *looping dengan fungsi if untuk mencari apakah ada file password?.txt di folder prak1, apabila belum buat file password.txt dengan (line 60) dengan kombinasi huruf besar kecil,dan numerik , lalu namai sesuai dengan urutan password$num, ketika di bash yang kedua & selanjutnya, penamaan password akan urut
-```
+
 4. Lakukan backup file syslog setiap jam dengan format nama file “jam:menit tanggal-bulan-tahun”. Isi dari file backup terenkripsi dengan konversi huruf (string manipulation) yang disesuaikan dengan jam dilakukannya backup misalkan sebagai berikut:
         a. Huruf b adalah alfabet kedua, sedangkan saat ini waktu menunjukkan pukul 12, sehingga huruf b diganti dengan huruf alfabet yang memiliki urutan ke 12+2 = 14.
         b. Hasilnya huruf b menjadi huruf n karena huruf n adalah huruf ke empat belas, dan seterusnya. 
         c. setelah huruf z akan kembali ke huruf a
         d. Backup file syslog setiap jam.
-        e. dan buatkan juga bash script untuk dekripsinya.
+        e. dan buatkan juga bash script untuk dekripsinya.   
 ```
 #!/bin/bash
 jam=`date +"%H"`
 input="/var/log/syslog"
-#uppercase=(A B C D E F G H I J K L M N O P Q R S T U V W X Y Z)
-#lowercase=(a b c d e f g h i j k l m n o p q r s t u v w x y z)
 uppercase="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 lowercase="abcdefghijklmnopqrstuvwxyz"
 uppercase=$uppercase$uppercase
 lowercase=$lowercase$lowercase
 jamnow=`date +"%H:%M %d-%m-%Y"`
-
-#cat $input
 cat $input | tr "${lowercase:0:26}" "${lowercase:$jam:26}"  | tr "${uppercase:0:26}" "${uppercase:$jam:26}" > "$jamnow"
 ```
-fungsi jam digunakan untuk mengambil jam awal, file syslog di diakses dengan variabel input,kemudian penempatan huruf, sesuai dengan penghitungan fungsi jamnow lalu string diambil dari uppercase & lowercase  dari indeks ke 0 sebanyak 26 lalu disimpan di jamnow di folder home
-```#!/bin/bash
-#timex=$1
-#jam=`echo "$1" | awk 'BEGIN {FS=":"}{print $1}'`
+Keterangan untuk script Enkrip : fungsi jam digunakan untuk mengambil jam awal, file syslog di diakses dengan variabel input,kemudian penempatan huruf, sesuai dengan penghitungan fungsi jamnow lalu string diambil dari uppercase & lowercase  dari indeks ke 0 sebanyak 26(string manipulation) lalu disimpan di jamnow di folder home      
+```
+#!/bin/bash
 tm=$1
 jamnow=${tm:0:2}
 uppercase=ABCDEFGHIJKLMNOPQRSTUVWXYZ
@@ -105,7 +101,15 @@ uppercase=$uppercase$uppercase
 lowercase=$lowercase$lowercase
 cat "$1" | tr "${lowercase:${jamnow}:26}" "${lowercase:0:26}" | tr "${uppercase:${jamnow}:26}" "${uppercase:0:26}" > "dekrip.txt"
 ```
-  
+Keterangan untuk fungsi Dekrip :variabel tm menandakan argumen pertama pada nama file inputan, sedangkan variabel jamnow digunakan mengambil argumen kedua pada variabel tm yang menandakan jam, kemudian uppercase dan lowercase berisi abjad yang akan digunakan pada string manipulation. command cat yang dijalankan berisi tr yang terbalik dari enkrip, yaitu mengubah string yang dimanipulasi kembali ke string semula. Untuk melakukan bash perlu format sebgai berikut:
+bash soal4dekrp.sh "jam:menit tgl-bulan-tahun"
+
+Untuk settingan crontabnya untuk setiap jam adalah sebaga berikut:
+```
+*/60 * * * * /bin/bash /home/vinsensius009/prak1/soal4.sh
+```
+
+
 5. Buatlah sebuah script bash untuk menyimpan record dalam syslog yang memenuhi kriteria berikut:
         a. Tidak mengandung string “sudo”, tetapi mengandung string “cron”, serta buatlah pencarian stringnya tidak bersifat  case sensitive, sehingga huruf kapital atau tidak, tidak menjadi masalah.
         b. Jumlah field (number of field) pada baris tersebut berjumlah kurang dari 13.
